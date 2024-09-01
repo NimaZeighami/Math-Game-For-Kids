@@ -9,6 +9,7 @@ import Login from "../Pages/Login/Login";
 import GameDetails from "../Pages/GameDetails/GameDetails";
 import LevelSelectionScreen from "../Pages/LevelSelectionScreen/LevelSelectionScreen";
 import NotFound from "../Pages/NotFound/NotFound";
+import NumberX from "../Pages/LearnNumbers/NumberX";
 
 export const Routes = createBrowserRouter([
   {
@@ -34,6 +35,12 @@ export const Routes = createBrowserRouter([
   {
     path: "/learn-numbers",
     element: <LearnNumbers />,
+    children: [
+      {
+        path: ":title",
+        element: <NumberX />,
+      },
+    ],
   },
   {
     path: "/learn-shapes",
