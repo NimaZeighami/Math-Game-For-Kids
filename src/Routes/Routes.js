@@ -1,15 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "../Pages/Home/Home";
 import LevelProgressScreen from "../Pages/LevelProgressScreen/LevelProgressScreen";
-import LearnShapes from "../Pages/LearnShapes/LearnShapes";
 import LearnNumbers from "../Pages/LearnNumbers/LearnNumbers";
-import Puzzle from "../Pages/Puzzles/Puzzle";
-import Patterns from "../Pages/Patterns/Patterns";
-import Login from "../Pages/Login/Login";
-import GameDetails from "../Pages/GameDetails/GameDetails";
-import LevelSelectionScreen from "../Pages/LevelSelectionScreen/LevelSelectionScreen";
+import Login from "../Pages/Login/Login"; 
+import GamesList from "../Pages/GamesList/GamesList";
 import NotFound from "../Pages/NotFound/NotFound";
 import NumberX from "../Pages/LearnNumbers/NumberX";
+import CountingGame from "../Pages/LearnNumbers/CountingGame";
+import GuessNextNumberGame from "../Pages/LearnNumbers/GuessNextNumberGame";
+import GuessPreviousNumberGame from "../Pages/LearnNumbers/GuessPreviousNumberGame";
+import SumGame from "../Pages/LearnNumbers/SumGame";
+import SubtractionGame from "../Pages/LearnNumbers/SubtractionGame";
 
 export const Routes = createBrowserRouter([
   {
@@ -25,12 +26,8 @@ export const Routes = createBrowserRouter([
     element: <LevelProgressScreen />,
   },
   {
-    path: "/level-selection-screen",
-    element: <LevelSelectionScreen />,
-  },
-  {
-    path: "/game-details",
-    element: <GameDetails />,
+    path: "/games-list",
+    element: <GamesList />,
   },
   {
     path: "/learn-numbers",
@@ -43,16 +40,24 @@ export const Routes = createBrowserRouter([
     ],
   },
   {
-    path: "/learn-shapes",
-    element: <LearnShapes />,
+    path: "/counting-game",
+    element: <CountingGame />,
   },
   {
-    path: "/puzzle",
-    element: <Puzzle />,
+    path: "/guess-next-number-game",
+    element: <GuessNextNumberGame />,
   },
   {
-    path: "/patterns",
-    element: <Patterns />,
+    path: "/guess-previous-number-game",
+    element: <GuessPreviousNumberGame />,
+  },
+  {
+    path: "/sum-game",
+    element: <SumGame />,
+  },
+  {
+    path: "/subtraction-game",
+    element: <SubtractionGame />,
   },
   {
     path: "/*",

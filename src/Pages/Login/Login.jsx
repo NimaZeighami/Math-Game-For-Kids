@@ -1,51 +1,6 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-// const PandaFace = ({ lookingAt }) => {
-//   return (
-//     <div className="relative w-64 h-64 mx-auto mb-8">
-//       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-full">
-//         <div className="absolute top-0 left-0 w-12 h-12 bg-gray-800 rounded-full transform -rotate-38 origin-bottom-right"></div>
-//         <div className="absolute top-0 right-0 w-12 h-12 bg-gray-800 rounded-full transform rotate-38 origin-bottom-left"></div>
-//         <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-40 h-40 bg-white rounded-full">
-//           <div className="absolute top-6 left-6 w-8 h-6 bg-pink-200 rounded-full transform rotate-25"></div>
-//           <div className="absolute top-6 right-6 w-8 h-6 bg-pink-200 rounded-full transform -rotate-25"></div>
-//           <div className={`absolute top-10 left-8 w-10 h-12 bg-gray-800 rounded-full `}>
-//             <div className={`absolute top-3 left-3 w-4 h-4 bg-white rounded-full ${lookingAt === 'username' ? 'transform translate-y-2' : ''}`}></div>
-//           </div>
-//           <div className={`absolute top-10 right-8 w-10 h-12 bg-gray-800 rounded-full`}>
-//             <div className={`absolute top-3 right-3 w-4 h-4 bg-white rounded-full ${lookingAt === 'username' ? 'transform translate-y-2' : ''}`}></div>
-//           </div>
-//           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gray-800 rounded-full rotate-45"></div>
-//           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex">
-//             <div className="w-5 h-3 bg-gray-800 rounded-b-full mr-1">
-//               <div className="w-4 h-2 bg-white rounded-b-full mx-auto"></div>
-//             </div>
-//             <div className="w-5 h-3 bg-gray-800 rounded-b-full ml-1">
-//               <div className="w-4 h-2 bg-white rounded-b-full mx-auto"></div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className={`absolute bottom-0 left-12 w-12 h-16 bg-gray-800 rounded-2xl transition-all duration-300 ease-in-out ${lookingAt === 'password' ? 'transform translate-x-6 translate-y-[-60px] rotate-45' : ''}`}></div>
-//       <div className={`absolute bottom-0 right-12 w-12 h-16 bg-gray-800 rounded-2xl transition-all duration-300 ease-in-out ${lookingAt === 'password' ? 'transform -translate-x-6 translate-y-[-60px] -rotate-45' : ''}`}></div>
-//       <div className="absolute bottom-0 left-20 w-16 h-16 bg-gray-800 rounded-3xl">
-//         <div className="absolute top-2 left-2 w-12 h-8 bg-white rounded-2xl">
-//           <div className="absolute top-6 left-2 w-3 h-3 bg-gray-800 rounded-full"></div>
-//           <div className="absolute top-6 left-6 w-3 h-3 bg-gray-800 rounded-full"></div>
-//           <div className="absolute top-6 right-2 w-3 h-3 bg-gray-800 rounded-full"></div>
-//         </div>
-//       </div>
-//       <div className="absolute bottom-0 right-20 w-16 h-16 bg-gray-800 rounded-3xl">
-//         <div className="absolute top-2 left-2 w-12 h-8 bg-white rounded-2xl">
-//           <div className="absolute top-6 left-2 w-3 h-3 bg-gray-800 rounded-full"></div>
-//           <div className="absolute top-6 left-6 w-3 h-3 bg-gray-800 rounded-full"></div>
-//           <div className="absolute top-6 right-2 w-3 h-3 bg-gray-800 rounded-full"></div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 const PandaFace = ({ lookingAt }) => {
   return (
     <div className="relative w-64 h-64 mx-auto mb-8 border-4 border-gray-500 rounded-full bg-white">
@@ -100,23 +55,24 @@ const PandaFace = ({ lookingAt }) => {
     </div>
   );
 };
+
 const Login = () => {
   const [lookingAt, setLookingAt] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div
-      className="h-screen bg-[url('../public/LoginBackgroundImage.jpeg')]  p-8 flex items-center justify-start "
+      className="min-h-screen bg-[url('../public/LoginBackgroundImage.jpeg')]   p-4 md:p-8 flex items-center justify-start"
       dir="rtl"
       style={{ fontFamily: "fantasy" }}
     >
-      <div className="flex flex-col justify-around bg-slate-500 rounded-full shadow-xl p-8 w-96 h-[100%] ">
+      <div className="flex flex-col justify-around bg-slate-500 rounded-full shadow-xl p-6 md:p-8 w-full max-w-md h-auto  min-h-[800px]">
         <PandaFace lookingAt={lookingAt} />
         <form className="space-y-6">
           <div>
             <label
               htmlFor="username"
-              className="block text-base font-semibold   text-white mb-2"
+              className="block text-base font-semibold text-white mb-2"
             >
               نام کاربری
             </label>
@@ -125,7 +81,7 @@ const Login = () => {
               id="username"
               type="text"
               placeholder="Ali Kuchuloo / Pedare Ali Kuchuloo"
-              className="w-full px-3 py-2  text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
               onFocus={() => setLookingAt("username")}
               onBlur={() => setLookingAt("")}
             />
