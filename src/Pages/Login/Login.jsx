@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const PandaFace = ({ lookingAt }) => {
   return (
@@ -59,16 +63,72 @@ const PandaFace = ({ lookingAt }) => {
 const Login = () => {
   const [lookingAt, setLookingAt] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [role, setRole] = useState("child");
+
+  const handleRegisterClick = () => {
+    setIsRegistering(true);
+    setRole(null);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+
+    if (isRegistering) {
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      localStorage.setItem("role", role);
+
+      MySwal.fire({
+        title: "ثبت نام موفق!",
+        text: "شما با موفقیت ثبت نام شدید.",
+        icon: "success",
+        confirmButtonText: "باشه",
+        customClass: {
+          popup: "bg-white border-4 border-green-500 rounded-3xl",
+          confirmButton: "bg-green-500 text-white rounded-full px-6 py-2",
+        },
+      }).then(() => {
+        setIsRegistering(false);
+      });
+    } else {
+      const storedUsername = localStorage.getItem("username");
+      const storedPassword = localStorage.getItem("password");
+
+      if (username === storedUsername && password === storedPassword) {
+        const storedRole = localStorage.getItem("role");
+        if (storedRole === "child") {
+          window.location.href = "/games-list";
+        } else if (storedRole === "parent") {
+          window.location.href = "/level-progress-screen";
+        }
+      } else {
+        MySwal.fire({
+          title: "خطا",
+          text: "نام کاربری یا رمز عبور اشتباه است.",
+          icon: "error",
+          confirmButtonText: "باشه",
+          customClass: {
+            popup: "bg-white border-4 border-red-500 rounded-3xl",
+            confirmButton: "bg-red-500 text-white rounded-full px-6 py-2",
+          },
+        });
+      }
+    }
+  };
 
   return (
     <div
-      className="min-h-screen bg-[url('../public/LoginBackgroundImage.jpeg')]   p-4 md:p-8 flex items-center justify-start"
+      className="min-h-screen bg-[url('../public/LoginBackgroundImage.jpeg')] p-4 md:p-8 flex items-center justify-start"
       dir="rtl"
       style={{ fontFamily: "fantasy" }}
     >
       <div className="flex flex-col justify-around bg-slate-500 rounded-full shadow-xl p-6 md:p-8 w-full max-w-md h-auto  min-h-[800px]">
         <PandaFace lookingAt={lookingAt} />
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="username"
@@ -84,6 +144,7 @@ const Login = () => {
               className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
               onFocus={() => setLookingAt("username")}
               onBlur={() => setLookingAt("")}
+              required
             />
           </div>
           <div>
@@ -101,6 +162,7 @@ const Login = () => {
                 className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
                 onFocus={() => setLookingAt("password")}
                 onBlur={() => setLookingAt("")}
+                required
               />
               <button
                 type="button"
@@ -115,17 +177,49 @@ const Login = () => {
               </button>
             </div>
           </div>
+
+          {!isRegistering && (
+            <div className="flex justify-between items-center">
+              <label className="text-white font-medium text-sm">
+                <input
+                  type="radio"
+                  name="role"
+                  value="child"
+                  className="mr-2"
+                  checked={role === "child"}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+                کودک
+              </label>
+              <label className="text-white font-medium text-sm">
+                <input
+                  type="radio"
+                  name="role"
+                  value="parent"
+                  className="mr-2"
+                  checked={role === "parent"}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+                والدین
+              </label>
+            </div>
+          )}
+
           <div className="flex justify-center">
             <button
               type="submit"
               className="w-full px-4 py-2 bg-[#19868B] text-white text-lg font-bold rounded-3xl  hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
-              ورود
+              {isRegistering ? "ثبت نام" : "ورود"}
             </button>
           </div>
-          <div className="flex justify-around">
-            <p className="text-white">فراموشی رمز عبور</p>
-            <p className="text-white">ثبت نام</p>
+          <div className="flex justify-center">
+            <p
+              className="text-white cursor-pointer"
+              onClick={() => setIsRegistering(!isRegistering)}
+            >
+              {isRegistering ? "بازگشت به ورود" : "ثبت نام"}
+            </p>
           </div>
         </form>
       </div>
