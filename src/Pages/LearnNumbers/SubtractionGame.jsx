@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
+import { useNavigate } from "react-router-dom";
 
 const SubtractionGame = () => {
   const [questionEquation, setQuestionEquation] = useState(generateRandomEquation());
@@ -9,6 +10,16 @@ const SubtractionGame = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
   const [alertBackgroundColor, setAlertBackgroundColor] = useState("bg-transparent");
+
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (wrongAnswers + correctAnswers === 20) {
+      // Save to local storage
+      localStorage.setItem("SubtractionGameGrade", correctAnswers);
+
+      navigate("/level-progress-screen");
+    }
+  }, [wrongAnswers, correctAnswers, navigate]);
 
   const fruitImages = ["🍎", "🍒", "🍇", "🍉", "🍓", "🍊", "🍍"];
 

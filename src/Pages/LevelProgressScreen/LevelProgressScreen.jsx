@@ -1,87 +1,82 @@
-import React, { useState } from 'react';
-import ContentWrapper from '../../Components/ContentWrapper/ContentWrapper';
+import React, { useEffect, useState } from "react";
+import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
 
-const Stepper = ({ currentStep, numberOfSteps, children }) => {
-  const current = currentStep + 1;
-  return (
-    <div>
-      <div className="flex items-center rounded-t-lg overflow-hidden bg-purple-200">
-        <div
-          className={`
-               h-3 bg-purple-600 
-               transition-[width]
-               w-${
-                 current === numberOfSteps
-                   ? "full"
-                   : `${(current / numberOfSteps) * 100}% rounded-r-lg `
-               } 
-               duration:300
-               `}
-        ></div>
-      </div>
-      <div className="rounded-b-lg border border-stroke bg-white p-10 mb-5">
-        {React.Children.toArray(children)[currentStep]}
-      </div>
-    </div>
-  );
+// Persian descriptions based on the grade
+const getGradeDescription = (grade) => {
+  if (grade <= 1) return "ضعیف: نیاز به تلاش و تمرین بیشتر";
+  if (grade <= 5) return "پایین: پیشرفت نیاز دارد";
+  if (grade <= 10) return "متوسط: قابل قبول اما قابل بهبود";
+  if (grade <= 15) return "خوب: کارکرد خوب";
+  return "عالی: عملکرد فوق‌العاده";
 };
 
-const StepperButton = ({ title, onClick, className, ...props }) => {
-  return (
-    <button
-      className={`${className} py-4 px-8 border border-stroke rounded-lg focus:outline-none transition ease-in-out duration:600 hover:bg-slate-100`}
-      onClick={onClick}
-      {...props}
-    >
-      {title}
-    </button>
-  );
-};
-
-const StepperRoot = ({ children, numberOfSteps }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-
-  const handleNextClick = () => {
-    if (currentStep < numberOfSteps - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handlePreviousClick = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  return (
-    <div className="max-w-180 m-20">
-      <Stepper currentStep={currentStep} numberOfSteps={numberOfSteps}>
-        {children}
-      </Stepper>
-      <div className="flex justify-end">
-        {currentStep !== 0 && (
-          <StepperButton
-            className="mr-5"
-            title="Previous"
-            onClick={handlePreviousClick}
-          />
-        )}
-        <StepperButton title="Next" onClick={handleNextClick} />
-      </div>
-    </div>
-  );
+// Convert game names from English to Persian
+const convertGameNameToPersian = (name) => {
+  switch (name) {
+    case "CountingGameGrade":
+      return "بازی شمارش";
+    case "GuessNextNumberGrade":
+      return "بازی حدس عدد بعدی";
+    case "GuessPerviousNumberGrade":
+      return "بازی حدس عدد قبلی";
+    case "SumGameGrade":
+      return "بازی جمع";
+    case "SubtractionGameGrade":
+      return "بازی تفریق";
+    default:
+      return "بازی ناشناخته";
+  }
 };
 
 const LevelProgressScreen = () => {
+  const [steps, setSteps] = useState([]);
+
+  useEffect(() => {
+    // Retrieve and parse data from local storage
+    const data = {
+      CountingGameGrade: parseInt(localStorage.getItem("CountingGameGrade")) || 0,
+      GuessNextNumberGrade: parseInt(localStorage.getItem("GuessNextNumberGrade")) || 0,
+      GuessPerviousNumberGrade: parseInt(localStorage.getItem("GuessPerviousNumberGrade")) || 0,
+      SumGameGrade: parseInt(localStorage.getItem("SumGameGrade")) || 0,
+      SubtractionGameGrade: parseInt(localStorage.getItem("SubtractionGameGrade")) || 0,
+    };
+
+    // Map the data to the required format
+    const formattedSteps = Object.entries(data).map(([key, value]) => ({
+      grade: value,
+      description: getGradeDescription(value),
+      gameName: convertGameNameToPersian(key),
+    }));
+
+    setSteps(formattedSteps);
+  }, []);
+
+  const Step = ({ grade, description, gameName }) => (
+    <div className="flex flex-col items-center w-full gap-8 animate-fade-in">
+      <div className="flex items-center justify-center w-24 h-24 bg-gradient-to-r from-pink-500 to-yellow-500 text-white rounded-full text-4xl font-extrabold shadow-lg transform transition-transform hover:scale-110">
+        {grade}
+      </div>
+      <p className="text-center text-gray-800 text-xl font-semibold">{gameName}</p>
+      <p className="text-center text-gray-600 text-lg">{description}</p>
+    </div>
+  );
+
   return (
     <ContentWrapper>
-      <StepperRoot className="min-w-[300px] m-20" numberOfSteps={5}>
-        <div>Step 1</div>
-        <div>Step 2</div>
-        <div>Step 3</div>
-        <div>Step 4</div>
-        <div>Step 5</div>
-      </StepperRoot>
+      <div className="p-6 h-full w-full flex flex-col items-center justify-center bg-gradient-to-b from-blue-200 to-[#34999c]">
+        <header className="text-white text-3xl font-bold mb-6 mt-4">
+          لیست نمرات
+        </header>
+        <div className="bg-white p-10 rounded-2xl shadow-2xl w-[90%] h-[50%] border border-gray-200 flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-around">
+            {steps.map((step, index) => (
+              <div key={index} className="flex-1">
+                <Step grade={step.grade} description={step.description} gameName={step.gameName} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </ContentWrapper>
   );
 };

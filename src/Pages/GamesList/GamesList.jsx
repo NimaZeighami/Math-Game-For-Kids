@@ -14,7 +14,7 @@ const games = [
     name: "یادگیری اعداد",
     icon: <Apple size={100} />,
     color: "bg-green-300",
-    path: "/learning-numbers",
+    path: "/learn-numbers/1",
   },
   {
     name: "بازی شمارش",
@@ -26,13 +26,13 @@ const games = [
     name: "حدس عدد بعدی",
     icon: <ArrowUp10 size={100} />,
     color: "bg-purple-300",
-    path: "/guess-next-number",
+    path: "/guess-next-number-game",
   },
   {
     name: "حدس عدد قبلی",
     icon: <ArrowDown10 size={100} />,
     color: "bg-red-300",
-    path: "/guess-previous-number",
+    path: "/guess-previous-number-game",
   },
   {
     name: "بازی جمع",

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
+import { useNavigate } from "react-router-dom";
 
 const GuessPreviousNumberGame = () => {
   const [questionNumber, setQuestionNumber] = useState(generateRandomNumber());
@@ -11,6 +12,15 @@ const GuessPreviousNumberGame = () => {
   const [alertBackgroundColor, setAlertBackgroundColor] =
     useState("bg-transparent");
 
+    const navigate = useNavigate()
+    useEffect(() => {
+      if (wrongAnswers + correctAnswers === 20) {
+        // Save to local storage
+        localStorage.setItem("GuessPerviousNumberGrade", correctAnswers);
+  
+        navigate("/sum-game");
+      }
+    }, [wrongAnswers, correctAnswers, navigate]);
   const fruitImages = ["🍎", "🍒", "🍇", "🍉", "🍓", "🍊", "🍍"];
 
   function generateRandomNumber() {

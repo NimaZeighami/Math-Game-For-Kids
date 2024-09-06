@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
+import { useNavigate } from "react-router-dom";
 
 const SumGame = () => {
-  const [questionEquation, setQuestionEquation] = useState(generateRandomEquation());
-  const [options, setOptions] = useState(generateOptions(questionEquation.result));
+  const [questionEquation, setQuestionEquation] = useState(
+    generateRandomEquation()
+  );
+  const [options, setOptions] = useState(
+    generateOptions(questionEquation.result)
+  );
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
-  const [alertBackgroundColor, setAlertBackgroundColor] = useState("bg-transparent");
+  const [alertBackgroundColor, setAlertBackgroundColor] =
+    useState("bg-transparent");
+    
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (wrongAnswers + correctAnswers === 20) {
+      localStorage.setItem("SumGameGrade", correctAnswers);
+
+      navigate("/subtraction-game");
+    }
+  }, [wrongAnswers, correctAnswers, navigate]);
 
   const fruitImages = ["🍎", "🍒", "🍇", "🍉", "🍓", "🍊", "🍍"];
 
@@ -69,11 +84,11 @@ const SumGame = () => {
     <ContentWrapper>
       <div className="LearnNumbers h-full p-10 flex flex-col justify-center items-center">
         <h1 className="text-5xl font-black text-center mb-8 w-full">
-          ← بازی  حاصل جمع →
+          ← بازی حاصل جمع →
         </h1>
         <p className="text-2xl font-semibold mb-7 text-center w-full">
-          از کودک خود بخواهید تا ابتدا معادله نمایش داده شده در تصویر را
-          برای شما بخواند و گزینه معادل حاصل جمع آن را انتخاب کند.
+          از کودک خود بخواهید تا ابتدا معادله نمایش داده شده در تصویر را برای
+          شما بخواند و گزینه معادل حاصل جمع آن را انتخاب کند.
         </p>
         <div className="Game flex justify-center items-center w-full h-full relative">
           <div className="bg-blue-100 p-8 rounded-3xl shadow-lg w-full h-full grid grid-cols-2 gap-8">
@@ -107,7 +122,9 @@ const SumGame = () => {
           </div>
         </div>
         {showAlert && (
-          <div className={`alert-popup fixed inset-0 flex items-center justify-center ${alertBackgroundColor} bg-opacity-50`}>
+          <div
+            className={`alert-popup fixed inset-0 flex items-center justify-center ${alertBackgroundColor} bg-opacity-50`}
+          >
             <div className="bg-white p-6 rounded-xl text-2xl font-bold">
               {alertMessage}
             </div>

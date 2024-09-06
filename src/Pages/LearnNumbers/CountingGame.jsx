@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
 
 const CountingGame = () => {
@@ -9,6 +10,7 @@ const CountingGame = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
   const [alertBackgroundColor, setAlertBackgroundColor] = useState("bg-transparent");
+  const navigate = useNavigate(); // Add this line to use navigation
 
   const fruitImages = ["🍎", "🍒", "🍇", "🍉", "🍓", "🍊", "🍍"];
 
@@ -29,27 +31,30 @@ const CountingGame = () => {
 
   function handleOptionClick(selectedOption) {
     if (selectedOption === questionNumber) {
-      setAlertBackgroundColor("bg-green-300")
+      setAlertBackgroundColor("bg-green-300");
       setAlertMessage("آآآفررررین ! 🎉  ");
       setShowAlert(true);
-      setCorrectAnswers(correctAnswers + 1);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 2000);
+      setCorrectAnswers((prev) => prev + 1);
+    } else {
+      setAlertBackgroundColor("bg-red-500");
+      setAlertMessage("دوباره تلاش کن فرشته کوچولو !! ❌");
+      setShowAlert(true);
+      setWrongAnswers((prev) => prev + 1);
+    }
 
+    setTimeout(() => {
+      setShowAlert(false);
       const newQuestionNumber = generateRandomNumber();
       setQuestionNumber(newQuestionNumber);
       setOptions(generateOptions(newQuestionNumber));
-    } else {
-      setAlertBackgroundColor("bg-red-500")
-      setAlertMessage("دوباره تلاش کن فرشته کوچولو !! ❌");
-      setShowAlert(true);
-      setWrongAnswers(wrongAnswers + 1);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 2000);
-    }
+
+      if (correctAnswers + wrongAnswers + 1 === 20) {
+        localStorage.setItem("CountingGameGrade", (correctAnswers + 1).toString());
+        navigate("/guess-next-number-game");
+      }
+    }, 2000);
   }
+
   return (
     <ContentWrapper>
       <div className="LearnNumbers h-full p-10 flex flex-col justify-center items-center">
@@ -92,7 +97,7 @@ const CountingGame = () => {
           </div>
         </div>
         {showAlert && (
-          <div className={`alert-popup  fixed inset-0 flex items-center justify-center ${alertBackgroundColor}  bg-opacity-50`}>
+          <div className={`alert-popup fixed inset-0 flex items-center justify-center ${alertBackgroundColor} bg-opacity-50`}>
             <div className="bg-white p-6 rounded-xl text-2xl font-bold">
               {alertMessage}
             </div>

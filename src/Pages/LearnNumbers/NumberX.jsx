@@ -1,8 +1,9 @@
 import { StepBackIcon, StepForwardIcon } from "lucide-react";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const NumberX = () => {
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
   const numbersFrom1To10 = [
     {
       itSelf: "1",
@@ -81,7 +82,9 @@ const NumberX = () => {
             <StepForwardIcon color="#DFA448" size={100} />
           </Link>
         ) : (
-          <StepForwardIcon color="gray" size={100} cursor="not-allowed" />
+          <StepForwardIcon color="green" size={100} onClick={()=>{
+            navigate("/counting-game")
+          }}/>
         )}
         <p className="text-2xl font-semibold">
           {" "}

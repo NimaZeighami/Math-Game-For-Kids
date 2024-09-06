@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
 
 const GuessNextNumberGame = () => {
@@ -8,8 +9,9 @@ const GuessNextNumberGame = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
-  const [alertBackgroundColor, setAlertBackgroundColor] =
-    useState("bg-transparent");
+  const [alertBackgroundColor, setAlertBackgroundColor] = useState("bg-transparent");
+  
+  const navigate = useNavigate(); 
 
   const fruitImages = ["🍎", "🍒", "🍇", "🍉", "🍓", "🍊", "🍍"];
 
@@ -53,6 +55,16 @@ const GuessNextNumberGame = () => {
       }, 2000);
     }
   }
+
+  useEffect(() => {
+    if (wrongAnswers + correctAnswers === 20) {
+      // Save to local storage
+      localStorage.setItem("GuessNextNumberGrade", correctAnswers);
+
+      navigate("/guess-previous-number-game");
+    }
+  }, [wrongAnswers, correctAnswers, navigate]);
+
   return (
     <ContentWrapper>
       <div className="LearnNumbers h-full p-10 flex flex-col justify-center items-center">

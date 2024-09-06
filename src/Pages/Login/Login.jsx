@@ -77,7 +77,37 @@ const Login = () => {
     const username = e.target.username.value;
     const password = e.target.password.value;
 
+    if (password.length < 6) {
+      MySwal.fire({
+        title: "خطا",
+        text: "رمز عبور باید حداقل 6 کاراکتر باشد.",
+        icon: "error",
+        confirmButtonText: "باشه",
+        customClass: {
+          popup: "bg-white border-4 border-red-500 rounded-3xl",
+          confirmButton: "bg-red-500 text-white rounded-full px-6 py-2",
+        },
+      });
+      return;
+    }
+
     if (isRegistering) {
+      // Check if username already exists
+      const existingUsername = localStorage.getItem("username");
+      if (existingUsername === username) {
+        MySwal.fire({
+          title: "خطا",
+          text: "این نام کاربری قبلاً استفاده شده است. لطفاً نام کاربری دیگری انتخاب کنید.",
+          icon: "error",
+          confirmButtonText: "باشه",
+          customClass: {
+            popup: "bg-white border-4 border-red-500 rounded-3xl",
+            confirmButton: "bg-red-500 text-white rounded-full px-6 py-2",
+          },
+        });
+        return;
+      }
+
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
       localStorage.setItem("role", role);
@@ -97,9 +127,9 @@ const Login = () => {
     } else {
       const storedUsername = localStorage.getItem("username");
       const storedPassword = localStorage.getItem("password");
+      const storedRole = localStorage.getItem("role");
 
       if (username === storedUsername && password === storedPassword) {
-        const storedRole = localStorage.getItem("role");
         if (storedRole === "child") {
           window.location.href = "/games-list";
         } else if (storedRole === "parent") {
@@ -122,108 +152,113 @@ const Login = () => {
 
   return (
     <div
-      className="min-h-screen bg-[url('../public/LoginBackgroundImage.jpeg')] p-4 md:p-8 flex items-center justify-start"
-      dir="rtl"
-      style={{ fontFamily: "fantasy" }}
-    >
-      <div className="flex flex-col justify-around bg-slate-500 rounded-full shadow-xl p-6 md:p-8 w-full max-w-md h-auto  min-h-[800px]">
-        <PandaFace lookingAt={lookingAt} />
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-base font-semibold text-white mb-2"
-            >
-              نام کاربری
-            </label>
+    className="min-h-screen bg-[url('../public/LoginBackgroundImage.jpeg')] bg-cover bg-center bg-no-repeat p-4 flex items-center justify-center overflow-hidden"
+    dir="rtl"
+    style={{ fontFamily: "Arial, sans-serif" }}
+  >
+    <div className="bg-slate-500 bg-opacity-90 rounded-3xl shadow-xl p-6 w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl flex flex-col justify-between h-auto">
+      <PandaFace lookingAt={lookingAt} />
+  
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-base font-semibold text-white mb-2"
+          >
+            نام کاربری
+          </label>
+          <input
+            dir="ltr"
+            id="username"
+            type="text"
+            placeholder="Ali Kuchuloo"
+            className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+            onFocus={() => setLookingAt("username")}
+            onBlur={() => setLookingAt("")}
+            required
+          />
+        </div>
+  
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-white mb-2"
+          >
+            رمز عبور
+          </label>
+          <div className="relative">
             <input
-              dir="ltr"
-              id="username"
-              type="text"
-              placeholder="Ali Kuchuloo / Pedare Ali Kuchuloo"
+              id="password"
+              placeholder="********"
+              type={showPassword ? "text" : "password"}
               className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
-              onFocus={() => setLookingAt("username")}
+              onFocus={() => setLookingAt("password")}
               onBlur={() => setLookingAt("")}
               required
+              // minLength={6}
             />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-white mb-2"
-            >
-              رمز عبور
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                placeholder="********"
-                type={showPassword ? "text" : "password"}
-                className="w-full px-3 py-2 text-base rounded-3xl border-[#19868B] border-4 focus:outline-none focus:ring-2 focus:ring-green-500"
-                onFocus={() => setLookingAt("password")}
-                onBlur={() => setLookingAt("")}
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 left-0 px-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {!isRegistering && (
-            <div className="flex justify-between items-center">
-              <label className="text-white font-medium text-sm">
-                <input
-                  type="radio"
-                  name="role"
-                  value="child"
-                  className="mr-2"
-                  checked={role === "child"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                کودک
-              </label>
-              <label className="text-white font-medium text-sm">
-                <input
-                  type="radio"
-                  name="role"
-                  value="parent"
-                  className="mr-2"
-                  checked={role === "parent"}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                والدین
-              </label>
-            </div>
-          )}
-
-          <div className="flex justify-center">
             <button
-              type="submit"
-              className="w-full px-4 py-2 bg-[#19868B] text-white text-lg font-bold rounded-3xl  hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              type="button"
+              className="absolute inset-y-0 left-0 px-3 flex items-center"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              {isRegistering ? "ثبت نام" : "ورود"}
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
             </button>
           </div>
-          <div className="flex justify-center">
-            <p
-              className="text-white cursor-pointer"
-              onClick={() => setIsRegistering(!isRegistering)}
-            >
-              {isRegistering ? "بازگشت به ورود" : "ثبت نام"}
-            </p>
+        </div>
+  
+        {!isRegistering && (
+          <div className="flex justify-between items-center">
+            <label className="text-white font-medium text-sm">
+              <input
+                type="radio"
+                name="role"
+                value="child"
+                className="mr-2"
+                checked={role === "child"}
+                onChange={(e) => setRole(e.target.value)}
+              />
+              کودک
+            </label>
+            <label className="text-white font-medium text-sm">
+              <input
+                type="radio"
+                name="role"
+                value="parent"
+                className="mr-2"
+                checked={role === "parent"}
+                onChange={(e) => setRole(e.target.value)}
+              />
+              والدین
+            </label>
           </div>
-        </form>
-      </div>
+        )}
+  
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="w-full px-4 py-2 bg-[#19868B] text-white text-lg font-bold rounded-3xl hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-300"
+          >
+            {isRegistering ? "ثبت نام" : "ورود"}
+          </button>
+        </div>
+  
+        <div className="flex justify-center">
+          <p
+            className="text-white cursor-pointer hover:underline"
+            onClick={() => setIsRegistering(!isRegistering)}
+          >
+            {isRegistering ? "بازگشت به ورود" : "ثبت نام"}
+          </p>
+        </div>
+      </form>
     </div>
+  </div>
+  
   );
 };
 

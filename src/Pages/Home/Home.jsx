@@ -11,10 +11,10 @@ const homePictures = {
 const Home = () => {
   return (
     <ContentWrapper>
-      <h1 className="text-center text-4xl"> به نام خدا </h1>
-      <div className="flex flex-col items-center justify-between ">
-        <div className="Text p-8">
-          <p class="text-2xl text-wrap text-gray-600 mt-4">
+      <h1 className="text-center text-3xl md:text-4xl"> به نام خدا </h1>
+      <div className="flex flex-col items-center justify-between mx-auto max-w-screen-lg overflow-hidden">
+        <div className="Text p-4 md:p-8">
+          <p className="text-base text-wrap text-gray-600 mt-4">
             در این برنامه فرزند شما یک سرگرمی مفید می یابد که نه تنها باعث اتلاف
             شدن وقتش نمیشود بلکه ریاضی را به خوبی یاد میگیرد و برای یادگیری
             ریاضی اول دبستان بسیار راحت خواهد بود چرا که خیلی از مباحث یا برای
@@ -27,15 +27,15 @@ const Home = () => {
         </div>
         <a
           href="/login"
-          className="bg-[#1D8C96]  text-white rounded-full py-3 px-8 shadow-md hover:shadow-2xl transition duration-500 self-end ml-10"
+          className="bg-[#1D8C96] text-white rounded-full py-3 px-8 shadow-md hover:shadow-2xl transition duration-500 self-center md:self-end mt-4"
         >
           تبت نام در مهدکودک ریاضی آنلاین
         </a>
-        <div>
+        <div className="w-full mt-4">
           <img
             src={homePictures.pictureFour}
             alt="hello"
-            className="object-cover w-full "
+            className="object-contain h-[195px] w-full"
           />
         </div>
       </div>
