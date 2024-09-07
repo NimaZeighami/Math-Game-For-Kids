@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ContentWrapper from "../../Components/ContentWrapper/ContentWrapper";
 
-// Persian descriptions based on the grade
 const getGradeDescription = (grade) => {
+  if (grade === "X") return "کودک هنوز این بازی را انجام نداده!!!";
   if (grade <= 1) return "ضعیف: نیاز به تلاش و تمرین بیشتر";
   if (grade <= 5) return "پایین: پیشرفت نیاز دارد";
   if (grade <= 10) return "متوسط: قابل قبول اما قابل بهبود";
@@ -10,7 +10,6 @@ const getGradeDescription = (grade) => {
   return "عالی: عملکرد فوق‌العاده";
 };
 
-// Convert game names from English to Persian
 const convertGameNameToPersian = (name) => {
   switch (name) {
     case "CountingGameGrade":
@@ -32,16 +31,14 @@ const LevelProgressScreen = () => {
   const [steps, setSteps] = useState([]);
 
   useEffect(() => {
-    // Retrieve and parse data from local storage
     const data = {
-      CountingGameGrade: parseInt(localStorage.getItem("CountingGameGrade")) || 0,
-      GuessNextNumberGrade: parseInt(localStorage.getItem("GuessNextNumberGrade")) || 0,
-      GuessPerviousNumberGrade: parseInt(localStorage.getItem("GuessPerviousNumberGrade")) || 0,
-      SumGameGrade: parseInt(localStorage.getItem("SumGameGrade")) || 0,
-      SubtractionGameGrade: parseInt(localStorage.getItem("SubtractionGameGrade")) || 0,
+      CountingGameGrade: localStorage.getItem("CountingGameGrade") ? parseInt(localStorage.getItem("CountingGameGrade")) : "X",
+      GuessNextNumberGrade: localStorage.getItem("GuessNextNumberGrade") ? parseInt(localStorage.getItem("GuessNextNumberGrade")) : "X",
+      GuessPerviousNumberGrade: localStorage.getItem("GuessPerviousNumberGrade") ? parseInt(localStorage.getItem("GuessPerviousNumberGrade")) : "X",
+      SumGameGrade: localStorage.getItem("SumGameGrade") ? parseInt(localStorage.getItem("SumGameGrade")) : "X",
+      SubtractionGameGrade: localStorage.getItem("SubtractionGameGrade") ? parseInt(localStorage.getItem("SubtractionGameGrade")) : "X",
     };
 
-    // Map the data to the required format
     const formattedSteps = Object.entries(data).map(([key, value]) => ({
       grade: value,
       description: getGradeDescription(value),

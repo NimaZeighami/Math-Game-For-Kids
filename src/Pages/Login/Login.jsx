@@ -66,10 +66,7 @@ const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [role, setRole] = useState("child");
 
-  const handleRegisterClick = () => {
-    setIsRegistering(true);
-    setRole(null);
-  };
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -127,12 +124,11 @@ const Login = () => {
     } else {
       const storedUsername = localStorage.getItem("username");
       const storedPassword = localStorage.getItem("password");
-      const storedRole = localStorage.getItem("role");
 
       if (username === storedUsername && password === storedPassword) {
-        if (storedRole === "child") {
+        if (role === "child") {
           window.location.href = "/games-list";
-        } else if (storedRole === "parent") {
+        } else if (role === "parent") {
           window.location.href = "/level-progress-screen";
         }
       } else {
